@@ -1,0 +1,112 @@
+//robotic arm code
+
+#include <ESP32Servo.h>
+
+#define REMOTEXY_MODE__ESP32CORE_BLUETOOTH
+
+//https://remotexy.com/en/library/
+
+#include <BluetoothSerial.h>
+
+#include <RemoteXY.h>
+
+// RemoteXY connection settings
+
+#define REMOTEXY_BLUETOOTH_NAME "Robotic Hand 2"
+
+
+unsigned char RemoteXY_CONF[] =
+
+{ 255,9,0,0,0,87,0,16,31,1,4,0,6,57,7,22,2,26,4,0,
+  19,57,7,22,2,26,4,0,31,57,7,22,2,26,4,0,42,57,7,22,
+  2,26,4,0,52,57,7,22,2,26,1,0,6,3,12,12,191,31,0,1,
+  0,45,3,12,12,15,31,0,1,0,26,3,12,12,37,31,0,10,48,24,
+  28,15,15,4,26,31,79,78,0,31,79,70,70,0 };
+
+// Array of bytes, description of position, color, and other settings.
+
+//When typing this line remove line breaks from data
+
+struct { 
+
+// input variables
+
+
+int8_t finger_1; // =0..100 slider position 
+  int8_t finger_2; // =0..100 slider position 
+  int8_t finger_3; // =0..100 slider position 
+  int8_t finger_4; // =0..100 slider position 
+  int8_t finger_5; // =0..100 slider position 
+  uint8_t Open_Hand; // =1 if button pressed, else =0 
+  uint8_t Point; // =1 if button pressed, else =0 
+  uint8_t Close_Hand; // =1 if button pressed, else =0 
+  uint8_t pushSwitch_1; // =1 if state is ON, else =0 
+}
+
+RemoteXY;
+
+Servo myServoA;
+
+Servo myServoB;
+
+Servo myServoC;
+
+Servo myServoD;
+
+Servo myServoE;
+
+Servo myServoF;
+
+ 
+
+void setup(){
+
+ 
+
+RemoteXY_Init ();
+
+myServoA.attach(4);
+
+myServoB.attach(16);
+
+myServoC.attach(17);
+
+myServoD.attach(5);
+
+myServoE.attach(18);
+
+myServoF.attach(19);
+
+int servoPositionA;
+
+int servoPositionB;
+
+int servoPositionC;
+
+int servoPositionD;
+
+int servoPositionE;
+
+int servoPositionF;
+
+}
+
+ 
+
+  void loop(){
+
+RemoteXY_Handler ();
+
+myServoA.writeMicroseconds(RemoteXY.finger_1*20+500);
+
+myServoB.writeMicroseconds(RemoteXY.finger_2*20+500);
+
+myServoC.writeMicroseconds(RemoteXY.finger_3*20+500);
+
+myServoD.writeMicroseconds(RemoteXY.finger_4*20+500);
+
+myServoE.writeMicroseconds(RemoteXY.finger_5*20+500);
+
+myServoF.writeMicroseconds(RemoteXY.finger_5*20+500);
+
+}
